@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D objekty v AR</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: #f4f4f4;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #222;
+    }
+    .prepinac {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .tab-btn {
+      background: #e2e2e2;
+      color: #222;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .tab-btn.aktivni {
+      background: #111;
+      color: #fff;
+    }
+    .viewer-box {
+      width: 100%;
+      max-width: 680px;
+      height: 68vh;
+      min-height: 360px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      --poster-color: transparent;
+    }
+    .popisek {
+      margin-top: 14px;
+      font-size: 14px;
+      color: #555;
+      text-align: center;
+    }
+    .ar-tlacitko {
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="prepinac">
+    <button class="tab-btn aktivni" onclick="zmenModel('./studnaa-compressed.glb', '3D model studny', this)">
+      Studna
+    </button>
+    <button class="tab-btn" onclick="zmenModel('./houbicka.glb', '3D model houbičky', this)">
+      Houbička
+    </button>
+  </div>
+
+  <div class="viewer-box">
+    <model-viewer
+      id="ar-viewer"
+      src="studnaa-compressed.glb"
+      alt="3D model studny"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      auto-rotate
+      shadow-intensity="1">
+      <button slot="ar-button" class="ar-tlacitko">
+        Zobrazit v AR
+      </button>
+    </model-viewer>
+  </div>
+
+  <p class="popisek">
+    Vyber model nahoře, otoč ho prstem nebo myší a na mobilu klepni na <strong>Zobrazit v AR</strong>.
+  </p>
+
+  <script>
+    function zmenModel(soubor, popis, tlacitko) {
+      const viewer = document.getElementById('ar-viewer');
+      viewer.src = soubor;
+      viewer.alt = popis;
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('aktivni'));
+      tlacitko.classList.add('aktivni');
+    }
+  </script>
+</body>
+</html>
